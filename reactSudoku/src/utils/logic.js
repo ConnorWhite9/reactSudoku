@@ -63,7 +63,7 @@ class SudokuCreator {
 
         this.domains = {}
 
-        for (let key in this.sudoku.variables) {
+        for (const key of this.sudoku.variables) {
             this.domains[key] = [];
             for (i = 1; i < self.sudoku.boxHeight; i++) {
                 this.domains[key].push(i);
@@ -82,6 +82,24 @@ class SudokuCreator {
         } else {
             return false; 
         }
+    }
+
+    printAssignment(assignment) {
+        console.log("Board: ");
+        for (let i = 0; i < this.sudoku.type; i++) {
+            let row = '';
+            for (let j = 0; j < this.sudoku.type; j++) {
+                let key = `${i},${j}`;
+                if (key in assignment) {
+                    row += assignment[key];
+                } else {
+                    row += " ";
+                }
+            }
+            console.log(row);
+        }
+        console.log();
+
     }
 
     random_var(assignment) {
@@ -109,9 +127,9 @@ class SudokuCreator {
         let revised = true;
 
         for (s = 0; s < this.sudoku.type; s++) {
-            if ((i, s) in Object.keys(assignment)) {
+            if ((i, s) in assignment) {
                 list.push(assignment[i, s]);
-                if (assignment[i, s] in this.domains[key]) {
+                if (this.domains[key].includes(assignment[i, s])) {
                     this.domains[key] =  this.domains[key].filter(item => item !== assignment[i, s]);
                 }
             }
@@ -128,9 +146,9 @@ class SudokuCreator {
         let revised = true;
 
         for (s = 0; s < this.sudoku.type; s++) {
-            if ((s, j) in Object.keys(assignment)) {
+            if ((s, j) in assignment) {
                 list.push(assignment[s, j]);
-                if (assignment[s, j] in this.domains[key]) {
+                if (this.domains[key].includes(assignment[s, j])) {
                     this.domains[key] =  this.domains[key].filter(item => item !== assignment[s, j]);
                 }
             }
@@ -139,6 +157,27 @@ class SudokuCreator {
             revised = false;
         }
         return revised
+    }
+
+    boxCheck(key, assignment) {
+        let l = 0;
+        let list = [];
+        revised = true;
+        for (const box in this.sudoku.box) {
+            if (this.sudoku.box[box].includes(key)) {
+                l = key;
+                break;
+            }
+        }
+
+        for (const slot of this.sudoku.box[l]) {
+            if (assignment.hasOwnProperty(slot)) {
+                list.push(assignment[slot]);
+                if (this.domains[key].includes(assignment[slot])) {
+                    this.domains[key] = this.domains[key].filter(value => value !== assignment[slot]); // Remove the value
+                }
+            }
+        }
     }
 
     revise(key, assignment) {
@@ -150,7 +189,7 @@ class SudokuCreator {
     }
 
     ac3(assignment) {
-        for (const key in this.sudoku.variables) {
+        for (const key of this.sudoku.variables) {
             if (!Object.keys(assignment).includes(key)) {
                 if (!revise(key, assignment)) {
                     return false;
@@ -160,20 +199,122 @@ class SudokuCreator {
         return true;
     }
 
+    inferences(assignment) {
+        let fh = [];
+        for (const key in this.sudoku.variables) {
+            if (this.domains[key].length == 1 && !key in assignment) {
+               assignment[key] = this.domains[key][0];
+               fh.push(key);
+            }
+        }
+        return assignment, fh;
+    }
+
+    reset() {
+        for (const key in this.sudoku.variables) {
+            this.domains[key] = Array.from({ length: this.sudoku.height - 1 }, (_, i) => i + 1);
+            this.domains[key] = this.domains[key].sort(() => Math.random() - 0.5); // Shuffle 
+        }
+    }
+
+    horizontalConsistency(assignment, key) {
+        let i, j;
+        [i, j] = key
+        let list = [];
+        for (s = 0; s < this.sudoku.type; s++ ) {
+            if ((s, j) in assignment) {
+                list.push(assignment[s, j]);
+            }
+        }
+        if (list.length !== new Set(list).size) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+     
+    verticalConsistency(assignment, key) {
+        let i, j;
+        [i, j] = key;
+        let list = [];
+        for (s = 0; s < this.sudoku.type; s++) {
+            if ((i, s) in assignment) {
+                list.push(assignment[i, s]);
+            }
+        }
+        if (list.length !== new Set(list).size) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    boxConsistency(assignment) {
+        if (Math.floor(Math.sqrt(Object.values(assignment).length)) === 9) {
+            var box = ThreeBox;
+        } else {
+            var box = TwoBox;
+        }
+        
+        for (let i = 1; i <= box.length; i++) {
+            let list = [];
+            for (let value of box[i]) {
+                list.push(assignment[`${value}`]);
+            }
+            if (list.length !== new Set(list).size) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    consistency(assignment, key) {
+        if (verticalConsistency(assignment, key) && horizontalConsistency(assignment, key)){
+            if (boxConsistency(assignment)){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     backtrack(assignment) {
         if (assignment_complete(assignment)) {
             // run checking measures
+            for (const key in this.sudoku.variables) {
+                if (!consistency(assignment, key)) {
+                    printAssignment(assignment);
+                }
+            }
             console.log("complete");
+            return assignment;
         }
         let variable = random_var(assignment);
         let list = this.domains[variable];
-        for (const value in list) {
+        for (const value of list) {
             let test = structuredClone(assignment);
-            test[value] = value;
+            test[variable] = value;
             if (ac3(test)) {
-
+                assignment[variable] = value;
+                let fh;
+                [assignment, fh] = inferences(assignment);
+                ac3(assignment);
+                let newAssignment = backtrack(assignment);
+                if (newAssignment != null) {
+                    return assignment
+                } else {
+                    delete assignment[key]
+                    for (const val of fh) {
+                        delete assignment(val)
+                    }
+                }
             }
+            reset()    
         }
+        return null; 
     }
 
 }

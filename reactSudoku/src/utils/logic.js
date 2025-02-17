@@ -51,21 +51,29 @@ class Sudoku {
         this.box;
         this.boxHeight;
         this.boxNum;
+        this.row;
+        this.column;
 
         if (type == 4) {
             this.box = TwoBox;
             this.boxNum = 5;
             this.boxHeight = 2;
+            this.row = new Array(4);
+            this.column = new Array(4);
         }
         else if (type == 9 ) {
             this.box = ThreeBox;
             this.boxHeight = 3;
             this.boxNum = 10;
+            this.row = new Array(9);
+            this.column = new Array(9);
         }
         else {
             this.box = FourBox;
             this.boxNum = 17;
             this.boxHeight = 4;
+            this.row = new Array(16);
+            this.column = new Array(16);
         }
     }
 }

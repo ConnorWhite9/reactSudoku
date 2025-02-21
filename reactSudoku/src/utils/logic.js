@@ -58,22 +58,22 @@ class Sudoku {
             this.box = TwoBox;
             this.boxNum = 5;
             this.boxHeight = 2;
-            this.row = new Array(4);
-            this.column = new Array(4);
+            this.row = [0, 1, 2, 3];
+            this.column = [0, 1, 2, 3];
         }
-        else if (type == 9 ) {
+        else if (type == 9) {
             this.box = ThreeBox;
             this.boxHeight = 3;
             this.boxNum = 10;
-            this.row = new Array(9);
-            this.column = new Array(9);
+            this.row = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            this.column = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         }
         else {
             this.box = FourBox;
             this.boxNum = 17;
             this.boxHeight = 4;
-            this.row = new Array(16);
-            this.column = new Array(16);
+            this.row = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+            this.column = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
         }
     }
 }
@@ -90,7 +90,6 @@ class SudokuCreator {
                 this.domains[key].push(i);
                 shuffleArray(this.domains[key]);
             }
-
         }
 
         this.playerboard = this.solve();

@@ -14,10 +14,22 @@ function App() {
   return (
     <>
       <div>
-        <p>Hello there</p>
+        {object.sudoku.row.map(num => {
+          return (
+            <div className="row">
+              {object.sudoku.column.map(num2 => {
+                
+                  let key = `${num},${num2}`;
+                  return (<div className="column"><h1 key={key}>{object.playerboard.get(key)}</h1></div>);  // Explicit return
+                
+              })}
+            </div>
+          );
+        })}
       </div>
     </>
   )
 }
 
 export default App
+

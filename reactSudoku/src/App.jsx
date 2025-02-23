@@ -13,20 +13,20 @@ function App() {
   const sides9 = [2, 5];
   return (
     <>
-      <div>
+      <table id="grid" class="myTable" style={{ marginTop: "5%", borderColor: "white", borderWidth: "4px", borderStyle: "solid" }}     >
         {object.sudoku.row.map(num => {
           return (
-            <div className="row">
+            <tr className="row" >
               {object.sudoku.column.map(num2 => {
                 
                   let key = `${num},${num2}`;
-                  return (<div className="column"><h1 key={key}>{object.playerboard.get(key)}</h1></div>);  // Explicit return
+                  return (<td style={{width: "50px", borderStyle: "solid", borderWidth: "2px"}}id="hello" className="{{choice}} piece identifier" >{object.playerboard.get(key)}</td>);  // Explicit return
                 
               })}
-            </div>
+            </tr>
           );
         })}
-      </div>
+      </table>
     </>
   )
 }

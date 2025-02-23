@@ -50,5 +50,9 @@
 }
 
 .row {
-  
+  height: 50px;
+}
+
+.myTable {
+  border-collapse: collapse;
 }

@@ -56,3 +56,27 @@
 .myTable {
   border-collapse: collapse;
 }
+.sudokuSlot {
+  width: 50px;
+  border-style: solid;
+  border-width: 0.5px;
+}
+
+.sideEdge {
+  border-right-width: 4px;
+  border-color: white;
+}
+
+.sideNormal {
+
+}
+
+.verticalEdge {
+  border-top-width: 4px;
+  border-color: white;
+}
+
+.verticalNormal {
+
+}
+

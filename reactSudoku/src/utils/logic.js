@@ -17,6 +17,29 @@ const ThreeBox = {
     9: ["6,6", "7,6", "8,6", "6,7", "7,7", "8,7", "6,8", "7,8", "8,8"]
 };
 
+function probability() {
+    const nums = [1, 0];
+    const probabilities = [7/9, 2/9];  // Probabilities must sum to 1, so this should be [7/9, 2/9]
+    
+    // Generate a random value based on the probabilities
+    const boolean = randomChoice(nums, probabilities);
+    
+    return boolean === 1;
+}
+
+// Helper function to simulate random.choices in JavaScript
+function randomChoice(arr, probabilities) {
+    let randomValue = Math.random();
+    let cumulativeProbability = 0;
+    
+    for (let i = 0; i < arr.length; i++) {
+        cumulativeProbability += probabilities[i];
+        if (randomValue < cumulativeProbability) {
+            return arr[i];
+        }
+    }
+}
+
 function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -53,6 +76,8 @@ class Sudoku {
         this.boxNum;
         this.row;
         this.column;
+        this.sides;
+        this.vertical;
 
         if (type == 4) {
             this.box = TwoBox;
@@ -60,6 +85,8 @@ class Sudoku {
             this.boxHeight = 2;
             this.row = [0, 1, 2, 3];
             this.column = [0, 1, 2, 3];
+            this.sides = [1];
+            this.vertical = [2];
         }
         else if (type == 9) {
             this.box = ThreeBox;
@@ -67,6 +94,8 @@ class Sudoku {
             this.boxNum = 10;
             this.row = [0, 1, 2, 3, 4, 5, 6, 7, 8];
             this.column = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            this.sides = [2, 5];
+            this.vertical = [3, 6]
         }
         else {
             this.box = FourBox;
@@ -407,7 +436,17 @@ class SudokuCreator {
     solve() {
         return this.backtrack(new Map())
     }
-
+    
+    unsolve(assignment) {
+        const copiedMap = new Map(assignmen);
+        for (let i = 1; i < this.sudoku.boxNum; i++) {
+            for (const key of this.sudoku.box[i]) {
+                if (probability()) {
+                    assignment.delete(key);
+                }
+            }
+        }
+    }
 }
 
 

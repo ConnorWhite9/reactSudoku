@@ -122,7 +122,7 @@ class SudokuCreator {
         }
 
         this.playerboard = this.solve();
-        this.incomplete = null;
+        this.incomplete = this.unsolve(this.playerboard);
     }
 
     assignment_complete(assignment) {
@@ -438,14 +438,15 @@ class SudokuCreator {
     }
     
     unsolve(assignment) {
-        const copiedMap = new Map(assignmen);
+        const copiedMap = new Map(assignment);
         for (let i = 1; i < this.sudoku.boxNum; i++) {
             for (const key of this.sudoku.box[i]) {
                 if (probability()) {
-                    assignment.delete(key);
+                    copiedMap.delete(key);
                 }
             }
         }
+        return copiedMap;
     }
 }
 
@@ -455,6 +456,7 @@ function tester() {
     let test = new SudokuCreator(base);
 
     test.printAssignment(test.playerboard);
+    console.log("unsolve", test.incomplete);
     return test;
 }
 

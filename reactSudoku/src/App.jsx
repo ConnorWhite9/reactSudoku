@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import tester from './utils/logic.js';
+import SubmitButton from './components/SubmitButton';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -50,6 +51,7 @@ function App() {
           );
         })}
       </table>
+      <SubmitButton />
     </>
   )
 }

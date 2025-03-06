@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import tester from '../utils/logic.js';
 import SubmitButton from '../components/SubmitButton';
-
+import '../App.css';
 
 const SudokuPage = () =>{
     const [count, setCount] = useState(0)

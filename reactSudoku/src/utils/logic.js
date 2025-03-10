@@ -126,7 +126,7 @@ class SudokuCreator {
     }
 
     assignment_complete(assignment) {
-        if (assignment.size === (this.sudoku.type ** 2)) {
+        if (Object.keys(assignment).length === (this.sudoku.type ** 2)) {
             return true;
         } else {
             return false; 
@@ -140,20 +140,19 @@ class SudokuCreator {
             let list = [];
             for (let j = 0; j < this.sudoku.type; j++) {
                 let strKey = `${i},${j}`;
-                list.push(assignment.get(strKey));
+                list.push(assignment[strKey]);
             }
             console.log(list.join(''));
             
         }
     }
-    
 
     random_var(assignment) {
         let count = Infinity; // Use Infinity to ensure a proper min comparison
         let matches = [];
     
         for (const key in this.domains) { // Iterate over this.domains instead
-            if (!assignment.has(key)) {  // Properly check if key is unassigned
+            if (!(key in assignment)) {  // Properly check if key is unassigned
                 let domainSize = this.domains[key].length;
     
                 if (domainSize < count) {
@@ -167,30 +166,24 @@ class SudokuCreator {
     
         // Return a random element if `matches` is not empty, otherwise return null (or handle it accordingly)
         return matches[Math.floor(Math.random() * matches.length)];
-    
     }
 
     verticalCheck(key, assignment) {
-        // Extract i and j from the string key
         let [i, j] = key.split(',').map(Number); // Convert string to integers
         let list = [];
         let revised = true;
     
         for (let s = 0; s < this.sudoku.type; s++) {
-            // Convert [i, s] into string key "i,s"
             let strKey = `${i},${s}`;
             
-            // Use .has() to check if the string key exists in the Map
-            if (assignment.has(strKey)) {
-                list.push(assignment.get(strKey)); // Get value associated with the string key
-                if (this.domains[key].includes(assignment.get(strKey))) {
-                    // Update the domain to filter out the value
-                    this.domains[key] = this.domains[key].filter(item => item !== assignment.get(strKey));
+            if (strKey in assignment) {
+                list.push(assignment[strKey]); // Get value associated with the string key
+                if (this.domains[key].includes(assignment[strKey])) {
+                    this.domains[key] = this.domains[key].filter(item => item !== assignment[strKey]);
                 }
             }
         }
     
-        // Adjust the condition to check the length of list and domain
         if ((this.sudoku.type - list.length) < this.domains[key].length) {
             revised = false;
         }
@@ -204,33 +197,28 @@ class SudokuCreator {
         let revised = true;
     
         for (let s = 0; s < this.sudoku.type; s++) {
-            // Use .has() to check if the key [s, j] exists in the Map
             let strKey = `${i},${s}`;
 
-            if (assignment.has(strKey)) {
-                list.push(assignment.get(strKey));
-                if (this.domains[key].includes(assignment.get(strKey))) {
-                    // Filter out the value from the domain
-                    this.domains[key] = this.domains[key].filter(item => item !== assignment.get(strKey));
+            if (strKey in assignment) {
+                list.push(assignment[strKey]);
+                if (this.domains[key].includes(assignment[strKey])) {
+                    this.domains[key] = this.domains[key].filter(item => item !== assignment[strKey]);
                 }
             }
         }
     
-        // Adjust the condition to check the length of list and domain
         if ((this.sudoku.type - list.length) < this.domains[key].length) {
             revised = false;
         }
     
         return revised;
     }
-    
 
     boxCheck(key, assignment) {
         let l = 0;
         let list = [];
         let revised = true;
     
-        // Find the correct box that contains the key
         for (const box in this.sudoku.box) {
             if (this.sudoku.box[box].some(arr => arr === key)) {
                 l = box;
@@ -238,29 +226,23 @@ class SudokuCreator {
             }
         }
     
-        // Check the slots in the identified box
         for (const slot of this.sudoku.box[l]) {
-            // Use the string key format "i,j"
             let strKey = `${slot[0]},${slot[1]}`;
     
-            // Use .has() to check if the string key exists in the Map
-            if (assignment.has(strKey)) {
-                list.push(assignment.get(strKey));
-                // If the value exists in the domain, filter it out
-                if (this.domains[key].includes(assignment.get(strKey))) {
-                    this.domains[key] = this.domains[key].filter(value => value !== assignment.get(strKey));
+            if (strKey in assignment) {
+                list.push(assignment[strKey]);
+                if (this.domains[key].includes(assignment[strKey])) {
+                    this.domains[key] = this.domains[key].filter(value => value !== assignment[strKey]);
                 }
             }
         }
     
-        // Check if the revised condition holds
         if ((this.sudoku.type - list.length) < this.domains[key].length) {
             revised = false;
         }
     
         return revised;
     }
-    
 
     revise(key, assignment) {
         if (this.verticalCheck(key, assignment) && this.horizontalCheck(key, assignment) && this.boxCheck(key, assignment)) {
@@ -271,13 +253,8 @@ class SudokuCreator {
     }
 
     ac3(assignment) {
-        // Iterate through each variable in the sudoku variables
         for (const key of this.sudoku.variables) {
-            // Convert the key to string format "i,j"
-    
-            // Check if the key exists in the assignment map (using string format)
-            if (!assignment.has(key)) {
-                // If the key doesn't exist in the assignment, revise the domain of the key
+            if (!(key in assignment)) {
                 if (!this.revise(key, assignment)) {
                     return false;
                 }
@@ -285,29 +262,24 @@ class SudokuCreator {
         }
         return true;
     }
-    
 
     inferences(assignment) {
         let fh = [];
         
-        // Iterate over each variable in the sudoku variables
         for (const key of this.sudoku.variables) {
-            // Check if the domain has only one value and the key is not in the assignment
-            if (this.domains[key].length === 1 && !assignment.has(key)) {
-                // Assign the value from the domain to the assignment map
-                assignment.set(key, this.domains[key][0]);
+            if (this.domains[key].length === 1 && !(key in assignment)) {
+                assignment[key] = this.domains[key][0];
                 fh.push(key);
             }
         }
         
-        // Return both the updated assignment map and the list of keys (fh)
         return [assignment, fh];
     }
 
     reset() {
         for (const key in this.sudoku.variables) {
             this.domains[key] = Array.from({ length: this.sudoku.height - 1 }, (_, i) => i + 1);
-            this.domains[key] = this.domains[key].sort(() => Math.random() - 0.5); // Shuffle 
+            this.domains[key] = this.domains[key].sort(() => Math.random() - 0.5);
         }
     }
 
@@ -315,16 +287,14 @@ class SudokuCreator {
         let [i, j] = key;
         let list = [];
         
-        // Loop through the horizontal values in the row
         for (let s = 0; s < this.sudoku.type; s++) {
-            let searchKey = `${i},${s}`; // Convert the key to a string format
+            let searchKey = `${i},${s}`;
             
-            if (assignment.has(searchKey)) { // Check if the string key exists
-                list.push(assignment.get(searchKey)); // Use the actual value
+            if (searchKey in assignment) {
+                list.push(assignment[searchKey]);
             }
         }
         
-        // Return whether all values are unique (consistency check)
         return list.length === new Set(list).size;
     }
     
@@ -332,36 +302,31 @@ class SudokuCreator {
         let [i, j] = key;
         let list = [];
         
-        // Loop through the vertical values in the column
         for (let s = 0; s < this.sudoku.type; s++) {
-            let searchKey = `${s},${j}`; // Convert the key to a string format
+            let searchKey = `${s},${j}`;
             
-            if (assignment.has(searchKey)) { // Check if the string key exists
-                list.push(assignment.get(searchKey)); // Use the actual value
+            if (searchKey in assignment) {
+                list.push(assignment[searchKey]);
             }
         }
         
-        // Return whether all values are unique (consistency check)
         return list.length === new Set(list).size;
     }
     
     boxConsistency(assignment) {
         let box = this.sudoku.type === 9 ? this.sudoku.box : this.sudoku.boxSmall;
         
-        // Loop through each box
         for (let i = 0; i < box.length; i++) {
             let list = [];
             
-            // Loop through each value in the box
             for (let value of box[i]) {
-                let searchKey = `${value[0]},${value[1]}`; // Convert each key to string format
+                let searchKey = `${value[0]},${value[1]}`;
                 
-                if (assignment.has(searchKey)) { // Check if the string key exists
-                    list.push(assignment.get(searchKey)); // Use the actual value
+                if (searchKey in assignment) {
+                    list.push(assignment[searchKey]);
                 }
             }
             
-            // Return false if any duplicates are found
             if (list.length !== new Set(list).size) {
                 return false;
             }
@@ -369,8 +334,6 @@ class SudokuCreator {
         
         return true;
     }
-    
-    
 
     consistency(assignment, key) {
         if (this.verticalConsistency(assignment, key) && this.horizontalConsistency(assignment, key)){
@@ -386,70 +349,59 @@ class SudokuCreator {
 
     backtrack(assignment) {
         if (this.assignment_complete(assignment)) {
-            // Run checking measures if assignment is complete
             for (const key of this.sudoku.variables) {
-                console.log("Assignment assessment before failure:", assignment);
                 if (!this.consistency(assignment, key)) {
-                    
-                    this.printAssignment(assignment); // print if inconsistent
+                    this.printAssignment(assignment);
                 }
             }
-            this.printAssignment(assignment); // print if inconsistent
-            console.log("complete");
-            return assignment;  // Return the valid assignment if complete
+            this.printAssignment(assignment);
+            return assignment;
         }
     
         let variable = this.random_var(assignment);
         let list = this.domains[variable];
-        // Try each value in the domain of the variable
         for (const value of list) {
-            let test = structuredClone(assignment); // Clone the current assignment
-            test.set(variable, value); // Try assigning a value to the variable
+            let test = { ...assignment }; // Clone the assignment object
+            test[variable] = value;
             
-            if (this.ac3(test)) {  // Check if assignment is valid using AC-3
-                //console.log("assignment", assignment)
-                assignment.set(variable,value);  // Apply the value to the assignment
+            if (this.ac3(test)) {
+                assignment[variable] = value;
                 let fh;
-                [assignment, fh] = this.inferences(assignment);  // Get new inferences
+                [assignment, fh] = this.inferences(assignment);
                 
-                this.ac3(assignment); // Re-run AC-3 with updated assignment
+                this.ac3(assignment);
                 
-                // Recurse with the new assignment
                 let newAssignment = this.backtrack(assignment);
                 
                 if (newAssignment != null) {
-                    return newAssignment;  // Return the valid assignment if found
+                    return newAssignment;
                 } else {
-                    assignment.delete(variable);  // Undo the assignment if failed
-                    
-                    // Undo inferences (delete those keys too)
+                    delete assignment[variable];
                     for (const val of fh) {
-                        assignment.delete(val);  // Corrected: delete the key, not the value
+                        delete assignment[val];
                     }
                 }
             }
         }
-        return null;  // Return null if no valid assignment found
+        return null;
     }
-    
 
     solve() {
-        return this.backtrack(new Map())
+        return this.backtrack({});
     }
     
     unsolve(assignment) {
-        const copiedMap = new Map(assignment);
+        const copiedObject = { ...assignment };
         for (let i = 1; i < this.sudoku.boxNum; i++) {
             for (const key of this.sudoku.box[i]) {
                 if (probability()) {
-                    copiedMap.delete(key);
+                    delete copiedObject[key];
                 }
             }
         }
-        return copiedMap;
+        return copiedObject;
     }
 }
-
 
 function tester() {
     let base = new Sudoku(9);

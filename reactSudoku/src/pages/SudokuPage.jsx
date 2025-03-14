@@ -11,14 +11,22 @@ const SudokuPage = () => {
   // Initialize Sudoku board only on first render
   useEffect(() => {
     const storedObject = localStorage.getItem("mySudokuObject");
-
+    //If sudoku is in local storage
     if (storedObject) {
       // Convert back to object
       const retrievedObject = JSON.parse(storedObject);
-      setSudokuObject(retrievedObject );
+      const storedAnswers = localStorage.getItem("answers");
+      const retrievedAnswers = JSON.parse(storedAnswers);
+      setSudokuObject(retrievedObject);
+      setAnswers(retrievedAnswers);
     } else {
       // Generate a new board
       const object = tester();
+      try {
+        localStorage.removeItem("answers");
+      } finally {
+        console.log("Your answers should have been removed if they existed.");
+      }
       setSudokuObject(object);
       addSudokuToStorage(object);
     }
@@ -29,12 +37,14 @@ const SudokuPage = () => {
       ...prevAnswers,
       [id]: value,
     }));
+    localStorage.setItem("answers", JSON.stringify(answers));
+    console.log("answers", answers);
   };
 
   const addSudokuToStorage = (sudoku) => {
     localStorage.setItem("mySudokuObject", JSON.stringify(sudoku));
   };
-  console.log("sudokuObject", sudokuObject);
+
   // Add object to local storage
   if (!sudokuObject) return <p>Loading Sudoku...</p>;
 
@@ -65,6 +75,7 @@ const SudokuPage = () => {
                           onChange={(e) => addAnswer(key, e.target.value)}
                           className="sudokuInput"
                           type="text"
+                          value={ answers[key] ? answers[key]:""}
                         />
                       )}
                     </td>

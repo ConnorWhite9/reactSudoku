@@ -47,14 +47,7 @@ function shuffleArray(arr) {
     }
 }
 
-function mapHasKey(map, searchKey) {
-    for (let key of map.keys()) {
-        if (Array.isArray(key) && key.length === searchKey.length && key.every((val, i) => val === searchKey[i])) {
-            return key; // Return actual reference
-        }
-    }
-    return null; // Key not found
-}
+
 
 class Sudoku {
     constructor(type) {

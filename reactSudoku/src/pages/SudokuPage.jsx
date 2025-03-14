@@ -15,10 +15,15 @@ const SudokuPage = () => {
     if (storedObject) {
       // Convert back to object
       const retrievedObject = JSON.parse(storedObject);
+
+      //Grab answers dictionary from local storage
       const storedAnswers = localStorage.getItem("answers");
       const retrievedAnswers = JSON.parse(storedAnswers);
+
+      //Set useStates to the values grabbed from localStorage
       setSudokuObject(retrievedObject);
       setAnswers(retrievedAnswers);
+      
     } else {
       // Generate a new board
       const object = tester();
@@ -68,6 +73,7 @@ const SudokuPage = () => {
                   let key = `${num},${num2}`;
                   return (
                     <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
+                      {/*If number for this tile given represent it as a piece of text*/}
                       {sudokuObject.incomplete?.[key] ? (
                         <text>{sudokuObject.playerboard[key]}</text>
                       ) : (

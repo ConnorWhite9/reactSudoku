@@ -41,7 +41,7 @@ button {
   }
   
   .center-it {
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 1rem;
-    }
+    display: flex;
+    justify-content: center;
+  }

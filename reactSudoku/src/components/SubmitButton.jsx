@@ -5,7 +5,7 @@ const SubmitButton = () => {
     return (<>
         <div className="center-it">
             <div className="container">
-                <button className="button">Submit Button</button>
+                <button className="button">Check Answers</button>
             </div>
         </div>
     </>);

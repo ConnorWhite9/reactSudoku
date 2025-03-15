@@ -81,7 +81,7 @@ const SudokuPage = () => {
                           onChange={(e) => addAnswer(key, e.target.value)}
                           className="sudokuInput"
                           type="text"
-                          value={ answers[key] ? answers[key]:""}
+                          value={ answers?.[key] ? answers?.[key]:""}
                         />
                       )}
                     </td>

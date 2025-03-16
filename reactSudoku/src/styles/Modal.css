@@ -4,22 +4,38 @@
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
-    top: 0;
+    top: -15%;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    
+    /*background-color: rgb(0,0,0);  Fallback color */
+    /*(background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   }
   
   /* Modal Content/Box */
   .modal-content {
+    display: flex;
+    flex-direction: column;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    padding: 20px 0px 0px 0px;
+    border-radius: 10px;
+    height: 35rem;
+    width: 25rem; /* Could be more or less, depending on screen size */
   }
+
+.modal-header {
+    display: flex;
+    justify-content: flex-end; /* Pushes the close button to the right */
+}
+.highlight {
+    height: 5rem;
+    margin-top: auto;
+    border-bottom-left-radius: 6px; /* Match the border radius of the bottom-left */
+    border-bottom-right-radius: 6px; /* Match the border radius of the bottom-right */
+}
+
   
   /* The Close Button */
   .close {
@@ -27,6 +43,7 @@
     float: right;
     font-size: 28px;
     font-weight: bold;
+    padding: 1rem 3rem 1rem 0;
   }
   
   .close:hover,

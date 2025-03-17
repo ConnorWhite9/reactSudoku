@@ -3,13 +3,18 @@ import '../styles/Modal.css';
 import checkmark from '../assets/checkmark.png';
 
 const Modal = forwardRef((props, ref) => {
+    const close = () => {
+        if (ref?.current) {
+            ref.current.style.display = "none";
+        }
+    }
     return (<>
         <div ref={ref} id="myModal" className="modal">
 
             
             <div className="modal-content">
                 <div className="modal-header">  
-                    <span className="close">&times;</span>
+                    <span onClick={close} className="close">&times;</span>
                 </div>
                 <div className="img-container">
                     <img style={{height: '10rem', width: '10rem'}} src={checkmark} />

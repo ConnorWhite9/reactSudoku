@@ -8,11 +8,13 @@ const Modal = forwardRef((props, ref) => {
 
             
             <div className="modal-content">
-            <div className="modal-header">  
-                <span className="close">&times;</span>
-            </div>
-                <img style={{height: '50px', width: '50px'}} src={checkmark} />
-                <p>Some text in the Modal..</p>
+                <div className="modal-header">  
+                    <span className="close">&times;</span>
+                </div>
+                <div className="img-container">
+                    <img style={{height: '10rem', width: '10rem'}} src={checkmark} />
+                    <p className="response">Hello. It seems you might've been right suprisingly. Keep up the mediocre work you fool.</p>
+                </div>
                 <div className="highlight" style={{backgroundColor: 'green', }}>
                 </div>
 

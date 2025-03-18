@@ -70,6 +70,10 @@ const SudokuPage = () => {
   }; 
 
   const checkAnswers = () => {
+    if (Object.keys(sudokuObject.playerboard).length - Object.keys(sudokuObject.incomplete).length != Object.keys(answers)) {
+      alert("Sudoku Not Complete!");
+      return; 
+    }
     let completed = answers;
     for (const slot in sudokuObject.incomplete) {
       completed[slot] = sudokuObject.incomplete[slot];

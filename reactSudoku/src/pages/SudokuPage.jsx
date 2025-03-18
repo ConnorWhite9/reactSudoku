@@ -40,13 +40,17 @@ const SudokuPage = () => {
     }
   }, []); // Empty dependency array ensures it runs only once
 
-  const addAnswer = (id, value) => {
-    setAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [id]: value,
-    }));
+  useEffect(() => {
     localStorage.setItem("answers", JSON.stringify(answers));
-    console.log("answers", answers);
+  }, [answers]); // Sync answers to local storage whenever it updates
+
+  const addAnswer = (id, value) => {
+    setAnswers((prevAnswers) => {
+      const newAnswers = { ...prevAnswers, [id]: value };
+      console.log("newAnswers", newAnswers)
+      return newAnswers;
+    });
+
   };
 
   const addSudokuToStorage = (sudoku) => {
@@ -70,6 +74,7 @@ const SudokuPage = () => {
     for (const slot in sudokuObject.incomplete) {
       completed[slot] = sudokuObject.incomplete[slot];
     }
+    console.log("completed", completed);
     if (checker) {
       console.log("it was right");
     } else {
@@ -106,9 +111,9 @@ const SudokuPage = () => {
                         <text>{sudokuObject.playerboard[key]}</text>
                       ) : (
                         <input
-                          onChange={(e) => addAnswer(key, e.target.value)}
+                          onChange={(e) => addAnswer(key, Number(e.target.value))}
                           className="sudokuInput"
-                          type="text"
+                          type="number"
                           value={ answers?.[key] ? answers?.[key]:""}
                         />
                       )}

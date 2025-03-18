@@ -1,11 +1,11 @@
 import React from "react";
 import '../styles/Button.css';
 
-const SubmitButton = () => {
+const SubmitButton = ({ action }) => {
     return (<>
         <div className="center-it">
             <div className="container">
-                <button className="button">Check Answers</button>
+                <button onClick={action} className="button">Check Answers</button>
             </div>
         </div>
     </>);

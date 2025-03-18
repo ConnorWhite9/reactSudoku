@@ -9,22 +9,8 @@ const Home = () => {
         navigate("/sudokuPage");
     }
 
-    const childRef = useRef(null);
-
-    const showChild = () => {
-        if (childRef.current) {
-        childRef.current.style.display = "block";  // Show the child component
-        }
-    };
-
-    const hideChild = () => {
-        if (childRef.current) {
-        childRef.current.style.display = "none";  // Hide the child component
-        }
-    };
     
     return (<>
-        <Modal ref={childRef} />
         <button onClick={showChild}>Show Child</button>
         <button onClick={hideChild}>Hide Child</button>
         <button onClick={goTo}>Please Click Me</button>

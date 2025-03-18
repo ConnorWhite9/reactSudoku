@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import tester from "../utils/logic.js";
+import checker from "../utils/checker.js";
 import SubmitButton from "../components/SubmitButton";
+import Modal from "../components/Modal";
 import "../App.css";
 
 const SudokuPage = () => {
   const [count, setCount] = useState(0);
   const [answers, setAnswers] = useState({}); // Use object for answers
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
+  const childRef = useRef(null);
 
   // Initialize Sudoku board only on first render
   useEffect(() => {
@@ -50,11 +53,36 @@ const SudokuPage = () => {
     localStorage.setItem("mySudokuObject", JSON.stringify(sudoku));
   };
 
+  const showChild = () => {
+    if (childRef.current) {
+    childRef.current.style.display = "block";  // Show the child component
+    }
+  };
+
+  const hideChild = () => {
+      if (childRef.current) {
+      childRef.current.style.display = "none";  // Hide the child component
+      }
+  }; 
+
+  const checkAnswers = () => {
+    let completed = answers;
+    for (const slot in sudokuObject.incomplete) {
+      completed[slot] = sudokuObject.incomplete[slot];
+    }
+    if (checker) {
+      console.log("it was right");
+    } else {
+      console.log("It was wrong");
+    }
+  }
+
   // Add object to local storage
   if (!sudokuObject) return <p>Loading Sudoku...</p>;
 
   return (
     <>
+      <Modal ref={childRef} />
       <table
         id="grid"
         className="myTable"
@@ -92,7 +120,7 @@ const SudokuPage = () => {
           })}
         </tbody>
       </table>
-      <SubmitButton />
+      <SubmitButton action={checkAnswers} />
     </>
   );
 };

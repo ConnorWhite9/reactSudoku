@@ -218,9 +218,8 @@ class SudokuCreator {
                 break;
             }
         }
-    
         for (const slot of this.sudoku.box[l]) {
-            let strKey = `${slot[0]},${slot[1]}`;
+            let strKey = slot;
     
             if (strKey in assignment) {
                 list.push(assignment[strKey]);
@@ -233,7 +232,6 @@ class SudokuCreator {
         if ((this.sudoku.type - list.length) < this.domains[key].length) {
             revised = false;
         }
-    
         return revised;
     }
 

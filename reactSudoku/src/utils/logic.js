@@ -401,7 +401,6 @@ function tester() {
     let test = new SudokuCreator(base);
 
     test.printAssignment(test.playerboard);
-    console.log("unsolve", test.incomplete);
     return test;
 }
 

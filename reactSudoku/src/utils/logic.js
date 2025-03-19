@@ -167,7 +167,7 @@ class SudokuCreator {
         let revised = true;
     
         for (let s = 0; s < this.sudoku.type; s++) {
-            let strKey = `${i},${s}`;
+            let strKey = `${s},${j}`;
             
             if (strKey in assignment) {
                 list.push(assignment[strKey]); // Get value associated with the string key
@@ -399,7 +399,7 @@ class SudokuCreator {
 function tester() {
     let base = new Sudoku(9);
     let test = new SudokuCreator(base);
-
+    console.log("playerBoard", test.playerboard);
     test.printAssignment(test.playerboard);
     return test;
 }

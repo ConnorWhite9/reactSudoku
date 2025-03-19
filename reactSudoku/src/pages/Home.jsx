@@ -11,8 +11,6 @@ const Home = () => {
 
     
     return (<>
-        <button onClick={showChild}>Show Child</button>
-        <button onClick={hideChild}>Hide Child</button>
         <button onClick={goTo}>Please Click Me</button>
     </>)
 }

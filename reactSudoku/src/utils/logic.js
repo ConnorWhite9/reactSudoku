@@ -127,6 +127,7 @@ class SudokuCreator {
     }
 
     printAssignment(assignment) {
+        console.log("assignment:", assignment);
         console.log("Board: ");
         for (let i = 0; i < this.sudoku.type; i++) {
             let row = '';
@@ -169,7 +170,7 @@ class SudokuCreator {
         for (let s = 0; s < this.sudoku.type; s++) {
             let strKey = `${s},${j}`;
             
-            if (strKey in assignment) {
+            if (assignment[strKey]) {
                 list.push(assignment[strKey]); // Get value associated with the string key
                 if (this.domains[key].includes(assignment[strKey])) {
                     this.domains[key] = this.domains[key].filter(item => item !== assignment[strKey]);
@@ -314,7 +315,7 @@ class SudokuCreator {
                 let searchKey = `${value[0]},${value[1]}`;
                 
                 if (searchKey in assignment) {
-                    list.push(assignment[searchKey]);
+                    list.push(assignment[value]);
                 }
             }
             
@@ -342,6 +343,7 @@ class SudokuCreator {
         if (this.assignment_complete(assignment)) {
             for (const key of this.sudoku.variables) {
                 if (!this.consistency(assignment, key)) {
+                    console.log("Failed");
                     this.printAssignment(assignment);
                 }
             }
@@ -397,8 +399,7 @@ class SudokuCreator {
 function tester() {
     let base = new Sudoku(9);
     let test = new SudokuCreator(base);
-    console.log("playerBoard", test.playerboard);
-    test.printAssignment(test.playerboard);
+    
     return test;
 }
 

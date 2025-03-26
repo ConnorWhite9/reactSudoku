@@ -111,13 +111,13 @@ const SudokuPage = () => {
                   return (
                     <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
                       {/*If number for this tile given represent it as a piece of text*/}
-                      {sudokuObject.incomplete?.[key] ? (
+                      {sudokuObject.playerboard?.[key] ? (
                         <text>{sudokuObject.playerboard[key]}</text>
                       ) : (
                         <input
                           onChange={(e) => addAnswer(key, Number(e.target.value))}
                           className="sudokuInput"
-                          type="number"
+                          type="text"
                           value={ answers?.[key] ? answers?.[key]:""}
                         />
                       )}

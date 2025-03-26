@@ -3,7 +3,10 @@ import tester from "../utils/logic";
 
 const Test = () => {
     const object = tester();
-    //console.log("playerboard", object.playerboard);
+    if (object.playerboard) {
+        object.printAssignment(object.playerboard);
+    }
+    
     return(<>
         <p>Hello</p>
     </>)

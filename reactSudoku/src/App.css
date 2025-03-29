@@ -83,6 +83,7 @@ body {
 
 .myTable {
   border-collapse: collapse;
+  box-shadow: rgba(151, 65, 252, 0.2) 10px 30px 45px -5px;
 }
 .sudokuSlot {
   width: 50px;
@@ -117,4 +118,8 @@ body {
   text-align: center;
   border-radius: 0px;
   color: white;
+}
+
+.purple {
+  color: rgb(255, 47, 192);
 }

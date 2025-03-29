@@ -3,16 +3,21 @@ import tester from "../utils/logic.js";
 import checker from "../utils/checker.js";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "../components/Modal";
+import Error from "../components/Error";
 import "../App.css";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SudokuPage = () => {
   const [count, setCount] = useState(0);
   const [answers, setAnswers] = useState({}); // Use object for answers
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
+  const [error, setError] = useState("not enough");
   const childRef = useRef(null);
+  const errorRef = useRef(null);
   const [boolean, setBoolean] = useState(null);
   const { type } = useParams();
+  const navigate = useNavigate();
   // Initialize Sudoku board only on first render
   useEffect(() => {
     const storedObject = localStorage.getItem("mySudokuObject");
@@ -20,9 +25,7 @@ const SudokuPage = () => {
       if (storedObject) {
         // Convert back to object
         const retrievedObject = JSON.parse(storedObject);
-        console.log("type3,", type);
         if (retrievedObject.sudoku.type !== type){
-          console.log("Im in here");
           const object = tester(type);
           try {
             localStorage.removeItem("mySudokuObject");
@@ -72,6 +75,12 @@ const SudokuPage = () => {
     localStorage.setItem("mySudokuObject", JSON.stringify(sudoku));
   };
 
+  const reload = () => {
+    localStorage.removeItem("mySudokuObject");
+    localStorage.removeItem("answers");
+    navigate("/");
+  }
+
   const showChild = () => {
     if (childRef.current) {
     childRef.current.style.display = "block";  // Show the child component
@@ -83,6 +92,18 @@ const SudokuPage = () => {
       childRef.current.style.display = "none";  // Hide the child component
       }
   }; 
+
+  const showError = () => {
+    if (errorRef.current) {
+      errorRef.current.style.display = "block";
+    }
+  }
+
+  const hideError = () => {
+    if (errorRef.current) {
+      errorRef.current.style.display = "none";
+    }
+  }
 
   const checkAnswers = () => {
     if (Object.keys(sudokuObject.playerboard).length - Object.keys(sudokuObject.incomplete).length != Object.keys(answers).length) {
@@ -132,7 +153,7 @@ const SudokuPage = () => {
                     <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
                       {/*If number for this tile given represent it as a piece of text*/}
                       {sudokuObject.incomplete?.[key] ? (
-                        <text>{sudokuObject.playerboard[key]}</text>
+                        <text className="purple">{sudokuObject.playerboard[key]}</text>
                       ) : (
                         <input
                           onChange={(e) => addAnswer(key, Number(e.target.value))}
@@ -150,6 +171,7 @@ const SudokuPage = () => {
         </tbody>
       </table>
       <SubmitButton action={checkAnswers} />
+      <Error ref={errorRef} error={error} />
     </>
   );
 };

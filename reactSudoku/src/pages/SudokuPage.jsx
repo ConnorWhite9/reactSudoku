@@ -107,7 +107,8 @@ const SudokuPage = () => {
 
   const checkAnswers = () => {
     if (Object.keys(sudokuObject.playerboard).length - Object.keys(sudokuObject.incomplete).length != Object.keys(answers).length) {
-      alert("Sudoku Not Complete!");
+      setError("Your Sudoku is not complete");
+      showError();
       return; 
     }
     let completed = { ...answers }; 

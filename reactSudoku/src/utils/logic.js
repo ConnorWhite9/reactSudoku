@@ -19,7 +19,7 @@ const ThreeBox = {
 
 function probability() {
     const nums = [1, 0];
-    const probabilities = [7/9, 2/9];  // Probabilities must sum to 1, so this should be [7/9, 2/9]
+    const probabilities = [6/9, 3/9];  // Probabilities must sum to 1, so this should be [7/9, 2/9]
     
     // Generate a random value based on the probabilities
     const boolean = randomChoice(nums, probabilities);
@@ -308,7 +308,7 @@ class SudokuCreator {
     boxConsistency(assignment) {
         let box = this.sudoku.type === 9 ? this.sudoku.box : this.sudoku.boxSmall;
         
-        for (let i = 0; i < box.length; i++) {
+        for (let i = 0; i < this.sudoku.box.length; i++) {
             let list = [];
             
             for (let value of box[i]) {
@@ -345,6 +345,7 @@ class SudokuCreator {
                 if (!this.consistency(assignment, key)) {
                     console.log("Failed");
                     this.printAssignment(assignment);
+                    return
                 }
             }
             this.printAssignment(assignment);
@@ -397,7 +398,7 @@ class SudokuCreator {
 }
 
 function tester() {
-    let base = new Sudoku(9);
+    let base = new Sudoku(4);
     let test = new SudokuCreator(base);
     
     return test;

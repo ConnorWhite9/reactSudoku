@@ -10,6 +10,7 @@ const SudokuPage = () => {
   const [answers, setAnswers] = useState({}); // Use object for answers
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
   const childRef = useRef(null);
+  const [boolean, setBoolean] = useState(null);
 
   // Initialize Sudoku board only on first render
   useEffect(() => {
@@ -70,18 +71,21 @@ const SudokuPage = () => {
   }; 
 
   const checkAnswers = () => {
-    if (Object.keys(sudokuObject.playerboard).length - Object.keys(sudokuObject.incomplete).length != Object.keys(answers)) {
+    if (Object.keys(sudokuObject.playerboard).length - Object.keys(sudokuObject.incomplete).length != Object.keys(answers).length) {
       alert("Sudoku Not Complete!");
       return; 
     }
-    let completed = answers;
+    let completed = { ...answers }; 
     for (const slot in sudokuObject.incomplete) {
       completed[slot] = sudokuObject.incomplete[slot];
     }
-    console.log("completed", completed);
-    if (checker) {
+    if (checker(completed)) {
+      setBoolean(true);
+      showChild()
       console.log("it was right");
     } else {
+      setBoolean(false);
+      showChild();
       console.log("It was wrong");
     }
   }
@@ -91,7 +95,7 @@ const SudokuPage = () => {
 
   return (
     <>
-      <Modal ref={childRef} />
+      <Modal boolean={boolean} ref={childRef} />
       <table
         id="grid"
         className="myTable"
@@ -100,6 +104,8 @@ const SudokuPage = () => {
           borderColor: "white",
           borderWidth: "4px",
           borderStyle: "solid",
+          marginLeft: "auto",
+          marginRight: "auto"
         }}
       >
         <tbody>
@@ -111,7 +117,7 @@ const SudokuPage = () => {
                   return (
                     <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
                       {/*If number for this tile given represent it as a piece of text*/}
-                      {sudokuObject.playerboard?.[key] ? (
+                      {sudokuObject.incomplete?.[key] ? (
                         <text>{sudokuObject.playerboard[key]}</text>
                       ) : (
                         <input

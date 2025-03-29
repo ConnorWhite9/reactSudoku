@@ -17,7 +17,7 @@ const ThreeBox = {
     9: ["6,6", "7,6", "8,6", "6,7", "7,7", "8,7", "6,8", "7,8", "8,8"]
 };
 
-function verticalCheck(completed) {
+function horizontalCheck(completed) {
     for (let i = 0; i < Math.floor(Math.sqrt(Object.values(completed).length)); i++) {
         let list = [];
         for (let j = 0; j < Math.floor(Math.sqrt(Object.values(completed).length)); j++) {
@@ -29,7 +29,7 @@ function verticalCheck(completed) {
     }
     return true;
 }
-function horizontalCheck(completed) {
+function verticalCheck(completed) {
     for (let j = 0; j < Math.floor(Math.sqrt(Object.values(completed).length)); j++) {
         let list = [];
         for (let i = 0; i < Math.floor(Math.sqrt(Object.values(completed).length)); i++) {
@@ -43,6 +43,7 @@ function horizontalCheck(completed) {
 }
 
 function boxCheck(completed){
+    let box;
     if (Math.floor(Math.sqrt(Object.values(completed).length)) === 9) {
         box = ThreeBox;
     } else {
@@ -63,11 +64,8 @@ function boxCheck(completed){
 }
 
 function checker(completed) {
-    if (verticalCheck(completed) && horizontalCheck(completed) && boxCheck(completed)) {
-        return true;
-    } else {
-        return false;
-    }
+    return (verticalCheck(completed) && horizontalCheck(completed) && boxCheck(completed)) ;
+    
 }
 
 

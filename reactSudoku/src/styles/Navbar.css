@@ -1,0 +1,15 @@
+.navContainer {
+    width: 100vw;
+    height: 10%;
+    border-bottom-width: 1px;
+    border-bottom-color: white;
+    border-bottom-style: solid;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+}
+
+.navStatement{
+    font-size: 5rem;
+    text-align: center;
+    font-weight: 275;
+    color: white;
+}

@@ -4,6 +4,7 @@ import checker from "../utils/checker.js";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "../components/Modal";
 import "../App.css";
+import { useParams } from "react-router-dom";
 
 const SudokuPage = () => {
   const [count, setCount] = useState(0);
@@ -11,34 +12,47 @@ const SudokuPage = () => {
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
   const childRef = useRef(null);
   const [boolean, setBoolean] = useState(null);
-
+  const { type } = useParams();
   // Initialize Sudoku board only on first render
   useEffect(() => {
     const storedObject = localStorage.getItem("mySudokuObject");
     //If sudoku is in local storage
-    if (storedObject) {
-      // Convert back to object
-      const retrievedObject = JSON.parse(storedObject);
-
-      //Grab answers dictionary from local storage
-      const storedAnswers = localStorage.getItem("answers");
-      const retrievedAnswers = JSON.parse(storedAnswers);
-
-      //Set useStates to the values grabbed from localStorage
-      setSudokuObject(retrievedObject);
-      setAnswers(retrievedAnswers);
-      
-    } else {
-      // Generate a new board
-      const object = tester();
-      try {
-        localStorage.removeItem("answers");
-      } finally {
-        console.log("Your answers should have been removed if they existed.");
+      if (storedObject) {
+        // Convert back to object
+        const retrievedObject = JSON.parse(storedObject);
+        console.log("type3,", type);
+        if (retrievedObject.sudoku.type !== type){
+          console.log("Im in here");
+          const object = tester(type);
+          try {
+            localStorage.removeItem("mySudokuObject");
+            localStorage.removeItem("answers");
+          } finally {
+            console.log("Your answers and previous board should have been removed if they existed.");
+          }
+          setSudokuObject(object);
+          addSudokuToStorage(object);
+        }
+        //Grab answers dictionary from local storage
+        const storedAnswers = localStorage.getItem("answers");
+        const retrievedAnswers = JSON.parse(storedAnswers);
+  
+        //Set useStates to the values grabbed from localStorage
+        setSudokuObject(retrievedObject);
+        setAnswers(retrievedAnswers);
+        
+      } else {
+        // Generate a new board
+        const object = tester(type);
+        try {
+          localStorage.removeItem("answers");
+        } finally {
+          console.log("Your answers should have been removed if they existed.");
+        }
+        setSudokuObject(object);
+        addSudokuToStorage(object);
       }
-      setSudokuObject(object);
-      addSudokuToStorage(object);
-    }
+    
   }, []); // Empty dependency array ensures it runs only once
 
   useEffect(() => {

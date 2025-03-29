@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/sudokuPage" element={<SudokuPage />} />
+        <Route path="/sudokuPage/:type" element={<SudokuPage />} />
         <Route path="/test" element={<Test />} />
       </Routes>
     </Router>

@@ -397,8 +397,8 @@ class SudokuCreator {
     }
 }
 
-function tester() {
-    let base = new Sudoku(4);
+function tester(num) {
+    let base = new Sudoku(num);
     let test = new SudokuCreator(base);
     
     return test;

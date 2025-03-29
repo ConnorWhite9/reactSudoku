@@ -5,13 +5,17 @@ import Modal from '../components/Modal';
 
 const Home = () => {
     const navigate = useNavigate();
-    const goTo = () => {
-        navigate("/sudokuPage");
+    const goTo4 = () => {
+        navigate("/sudokuPage/4");
+    }
+    const goTo9 = () =>{
+        navigate("sudokuPage/9");
     }
 
     
     return (<>
-        <button onClick={goTo}>Please Click Me</button>
+        <button onClick={goTo4}>4 Page Sudoku</button>
+        <button onClick={goTo9}>9 Sudoku</button>
     </>)
 }
 

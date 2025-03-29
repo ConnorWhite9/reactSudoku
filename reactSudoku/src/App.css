@@ -83,7 +83,9 @@ body {
 
 .myTable {
   border-collapse: collapse;
-  box-shadow: rgba(151, 65, 252, 0.2) 10px 30px 45px -5px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0px 10px 10px 0px;
+  width: 20rem;
+  height: 20rem;
 }
 .sudokuSlot {
   width: 50px;
@@ -125,4 +127,19 @@ body {
 
 .purple {
   color: rgb(255, 47, 192);
+}
+
+
+.homeContainer {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  gap: 4;
+
+}
+
+.homeBtn {
+  background-color: black;
+  border: none;
+  outline:none;
 }

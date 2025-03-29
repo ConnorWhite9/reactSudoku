@@ -18,14 +18,14 @@ const Home = () => {
   
 
     return (<>
-        <button onClick={goTo9}>
-            <Board number={nine} />
-
-        </button>
-        <button onClick={goTo4}>
-
-            <Board number = {four} />
-        </button>
+        <div className="homeContainer">
+            <button className="homeBtn" onClick={goTo9}>
+                <Board number={nine} />
+            </button>
+            <button className="homeBtn" onClick={goTo4}>
+                <Board number = {four} />
+            </button>
+        </div>
     </>)
 }
 

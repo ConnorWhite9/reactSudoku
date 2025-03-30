@@ -19,12 +19,20 @@ const Home = () => {
 
     return (<>
         <div className="homeContainer">
-            <button className="homeBtn" onClick={goTo9}>
-                <Board number={nine} />
-            </button>
-            <button className="homeBtn" onClick={goTo4}>
-                <Board number = {four} />
-            </button>
+            <div className="btn-container">
+                <text className="btn-title">9x9 Sudoku</text>
+                <button className="homeBtn" onClick={goTo9}>
+                    <Board number={nine} />
+                </button>
+            </div>
+            
+            <div className="btn-container">
+                <text className="btn-title"> 4x4 Sudoku</text>
+                <button className="homeBtn" onClick={goTo4}>
+                    <Board number = {four} />
+                </button>
+            </div>
+            
         </div>
     </>)
 }

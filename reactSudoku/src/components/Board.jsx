@@ -1,12 +1,19 @@
 
+import '../styles/Board.css';
+
 const Board = (props) => {
+    let sizeOfFont;
+    if (props.number.sudoku.type == 9)
+        sizeOfFont = "1";
+    else{
+        sizeOfFont = "3";
+    }
     return (
         <>
             <table
                     id="grid"
                     className="myTable"
                     style={{
-                    marginTop: "5%",
                     borderColor: "white",
                     borderWidth: "4px",
                     borderStyle: "solid",
@@ -24,7 +31,7 @@ const Board = (props) => {
                                 <td key={key} id="hello" className={`sudokuSlot ${props.number.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${props.number.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
                                 {/*If props.number for this tile given represent it as a piece of text*/}
 
-                                    <text>{props.number.playerboard[key]}</text>
+                                    <text style={{fontSize: `${sizeOfFont}rem`}}>{props.number.playerboard[key]}</text>
                             
                                 </td>
                             );

@@ -1,0 +1,32 @@
+.myTable {
+    margin-top: 12px;
+    border-color: white;
+    border-width: 3px;
+    border-style: solid;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+.row {
+    height: calc(20rem / var(--grid-size)); /* Dynamically adjust row height */
+}
+
+.sudokuSlot {
+    width: calc(20rem / var(--grid-size)); /* Dynamically adjust cell width */
+    height: calc(20rem / var(--grid-size)); /* Dynamically adjust cell height */
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid white;
+}
+
+
+.verticalEdge {
+    border-top-width: 4px;
+    border-color: white;
+  }
+
+.sideEdge {
+    border-right-width: 4px;
+    border-color: white;
+}

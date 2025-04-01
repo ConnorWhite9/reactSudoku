@@ -1,4 +1,5 @@
 import tester from "../utils/logic";
+import Circle from "../components/Circle";
 
 
 const wrong = {
@@ -86,7 +87,7 @@ const wrong = {
 }
 
 const Test = () => {
-    const object = tester();
+    /*const object = tester();
     for (const key in wrong) {
         if (!object.consistency(wrong, key)) {
             console.log("Check seems to be working proerply");
@@ -94,11 +95,11 @@ const Test = () => {
     }
     if (object.playerboard) {
         object.printAssignment(object.playerboard);
-    }
+    }*/
     
     
     return(<>
-        <p>Hello</p>
+        <Circle/>
     </>)
 }
 

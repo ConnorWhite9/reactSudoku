@@ -4,6 +4,7 @@ import checker from "../utils/checker.js";
 import SubmitButton from "../components/SubmitButton";
 import Modal from "../components/Modal";
 import Error from "../components/Error";
+import Circle from "../components/Circle";
 import "../App.css";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ const SudokuPage = () => {
   const [answers, setAnswers] = useState({}); // Use object for answers
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
   const [error, setError] = useState("not enough");
+  const [loading, setLoading] = useState(true);
   const childRef = useRef(null);
   const errorRef = useRef(null);
   const [boolean, setBoolean] = useState(null);
@@ -55,6 +57,7 @@ const SudokuPage = () => {
         setSudokuObject(object);
         addSudokuToStorage(object);
       }
+      setLoading(false);
     
   }, []); // Empty dependency array ensures it runs only once
 
@@ -127,7 +130,7 @@ const SudokuPage = () => {
   }
 
   // Add object to local storage
-  if (!sudokuObject) return <p>Loading Sudoku...</p>;
+  if (loading) return <Circle />;
 
   return (
     <>

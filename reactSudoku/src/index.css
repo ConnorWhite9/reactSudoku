@@ -44,3 +44,29 @@ h1 {
     background-color: #f9f9f9;
   }
 }
+
+
+.loading-title {
+  margin-top: 15%;
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 275;
+  color: rgb(255, 7, 255);
+}
+.spinner{
+  height: 120px;
+  width: 120px;
+  border: 6px solid;
+  border-color: white transparent white transparent;
+  border-radius: 50%;
+  animation: spin 1.3s linear infinite;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

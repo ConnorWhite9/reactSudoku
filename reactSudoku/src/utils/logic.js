@@ -45,7 +45,21 @@ function shuffleArray(arr) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
     }
+    return arr;
 }
+
+function range(start, stop, step = 1) {
+    if (stop === undefined) {
+      stop = start;
+      start = 0;
+    }
+  
+    const result = [];
+    for (let i = start; i < stop; i += step) {
+      result.push(i);
+    }
+    return result;
+  }
 
 
 
@@ -91,6 +105,7 @@ class Sudoku {
             this.vertical = [3, 6]
         }
         else {
+            let FourBox = [];
             this.box = FourBox;
             this.boxNum = 17;
             this.boxHeight = 4;
@@ -269,10 +284,16 @@ class SudokuCreator {
     }
 
     reset() {
-        for (const key in this.sudoku.variables) {
-            this.domains[key] = Array.from({ length: this.sudoku.height - 1 }, (_, i) => i + 1);
-            this.domains[key] = this.domains[key].sort(() => Math.random() - 0.5);
+        console.log("before reset", this.domains);
+        for (const key of this.sudoku.variables) {
+            // Create an array from 1 to sudoku.height
+            let array = range(9);
+            // Shuffle the array randomly
+            this.domains[key] = shuffleArray(array);
+            
         }
+        console.log("after reset", this.domains);
+        
     }
 
     horizontalConsistency(assignment, key) {
@@ -341,6 +362,7 @@ class SudokuCreator {
 
     backtrack(assignment) {
         if (this.assignment_complete(assignment)) {
+            console.log("Sudoku was completed");
             for (const key of this.sudoku.variables) {
                 if (!this.consistency(assignment, key)) {
                     console.log("Failed");
@@ -376,7 +398,9 @@ class SudokuCreator {
                     }
                 }
             }
+            this.reset();
         }
+        console.log("null");
         return null;
     }
 
@@ -400,6 +424,10 @@ class SudokuCreator {
 function tester(num) {
     let base = new Sudoku(num);
     let test = new SudokuCreator(base);
+    if (test.playerboard == null) {
+        console.log("test", test);
+        console.error("This sudoku was invalid");
+    }
     
     return test;
 }

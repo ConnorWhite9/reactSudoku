@@ -15,6 +15,7 @@ const SudokuPage = () => {
   const [sudokuObject, setSudokuObject] = useState(null); // Store the board
   const [error, setError] = useState("not enough");
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const childRef = useRef(null);
   const errorRef = useRef(null);
   const [boolean, setBoolean] = useState(null);
@@ -88,6 +89,7 @@ const SudokuPage = () => {
     if (childRef.current) {
     childRef.current.style.display = "block";  // Show the child component
     }
+    setIsOpen(true);
   };
 
   const hideChild = () => {
@@ -134,48 +136,50 @@ const SudokuPage = () => {
 
   return (
     <>
-      <Modal boolean={boolean} ref={childRef} />
-      <table
-        id="grid"
-        className="myTable"
-        style={{
-          marginTop: "5%",
-          borderColor: "white",
-          borderWidth: "4px",
-          borderStyle: "solid",
-          marginLeft: "auto",
-          marginRight: "auto"
-        }}
-      >
-        <tbody>
-          {sudokuObject.sudoku.row.map((num) => {
-            return (
-              <tr className="row" key={num}>
-                {sudokuObject.sudoku.column.map((num2) => {
-                  let key = `${num},${num2}`;
-                  return (
-                    <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
-                      {/*If number for this tile given represent it as a piece of text*/}
-                      {sudokuObject.incomplete?.[key] ? (
-                        <text className="purple">{sudokuObject.playerboard[key]}</text>
-                      ) : (
-                        <input
-                          onChange={(e) => addAnswer(key, Number(e.target.value))}
-                          className="sudokuInput"
-                          type="text"
-                          value={ answers?.[key] ? answers?.[key]:""}
-                        />
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <SubmitButton action={checkAnswers} />
-      <Error ref={errorRef} error={error} />
+      <Modal boolean={boolean} setIsOpen={setIsOpen} ref={childRef} />
+      <div className={isOpen ? "blur-background" : ""}>
+        <table
+          id="grid"
+          className="myTable"
+          style={{
+            marginTop: "5%",
+            borderColor: "white",
+            borderWidth: "4px",
+            borderStyle: "solid",
+            marginLeft: "auto",
+            marginRight: "auto"
+          }}
+        >
+          <tbody>
+            {sudokuObject.sudoku.row.map((num) => {
+              return (
+                <tr className="row" key={num}>
+                  {sudokuObject.sudoku.column.map((num2) => {
+                    let key = `${num},${num2}`;
+                    return (
+                      <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
+                        {/*If number for this tile given represent it as a piece of text*/}
+                        {sudokuObject.incomplete?.[key] ? (
+                          <text className="purple">{sudokuObject.playerboard[key]}</text>
+                        ) : (
+                          <input
+                            onChange={(e) => addAnswer(key, Number(e.target.value))}
+                            className="sudokuInput"
+                            type="text"
+                            value={ answers?.[key] ? answers?.[key]:""}
+                          />
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <SubmitButton action={checkAnswers} />
+        <Error ref={errorRef} error={error} />
+      </div>
     </>
   );
 };

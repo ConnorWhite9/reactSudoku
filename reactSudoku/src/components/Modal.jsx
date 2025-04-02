@@ -8,6 +8,7 @@ const Modal = forwardRef((props, ref) => {
         if (ref?.current) {
             ref.current.style.display = "none";
         }
+        props.setIsOpen(false);
     }
     let text = "";
     let color = "";
@@ -33,8 +34,8 @@ const Modal = forwardRef((props, ref) => {
                     <img style={{height: '10rem', width: '10rem'}} src={image} />
                     <p className="response">{text}</p>
                 </div>
-                <div className="highlight" style={{backgroundColor: color, }}>
-                </div>
+                {/*<div className="highlight" style={{backgroundColor: color, }}>
+                </div>*/}
 
             </div>
 

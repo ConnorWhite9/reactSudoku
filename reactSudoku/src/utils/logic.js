@@ -284,7 +284,6 @@ class SudokuCreator {
     }
 
     reset() {
-        console.log("before reset", this.domains);
         for (const key of this.sudoku.variables) {
             // Create an array from 1 to sudoku.height
             let array = range(9);
@@ -292,7 +291,6 @@ class SudokuCreator {
             this.domains[key] = shuffleArray(array);
             
         }
-        console.log("after reset", this.domains);
         
     }
 

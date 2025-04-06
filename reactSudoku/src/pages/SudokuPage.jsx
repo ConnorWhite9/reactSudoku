@@ -67,11 +67,17 @@ const SudokuPage = () => {
   }, [answers]); // Sync answers to local storage whenever it updates
 
   const addAnswer = (id, value) => {
-    setAnswers((prevAnswers) => {
-      const newAnswers = { ...prevAnswers, [id]: value };
-      console.log("newAnswers", newAnswers)
-      return newAnswers;
-    });
+    
+
+    // Allow only digits 1 through 9
+    if (value == '' || /^[1-9]?$/.test(value)) {
+      setAnswers((prevAnswers) => {
+        const newAnswers = { ...prevAnswers, [id]: value };
+        console.log("newAnswers", newAnswers)
+        return newAnswers;
+      });
+    }
+    
 
   };
 
@@ -140,7 +146,7 @@ const SudokuPage = () => {
       <div className={isOpen ? "blur-background" : ""}>
         <table
           id="grid"
-          className="myTable"
+          className="myTable2"
           style={{
             marginTop: "5%",
             borderColor: "white",
@@ -157,14 +163,15 @@ const SudokuPage = () => {
                   {sudokuObject.sudoku.column.map((num2) => {
                     let key = `${num},${num2}`;
                     return (
-                      <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""}`}>
+                      <td key={key} id="hello" className={`sudokuSlot ${sudokuObject.sudoku.vertical.includes(num) ? "verticalEdge": ""} ${sudokuObject.sudoku.sides.includes(num2) ? "sideEdge" : ""} 
+                      ${type == 9 ? 'font9': 'font4'}`}>
                         {/*If number for this tile given represent it as a piece of text*/}
                         {sudokuObject.incomplete?.[key] ? (
                           <text className="purple">{sudokuObject.playerboard[key]}</text>
                         ) : (
                           <input
                             onChange={(e) => addAnswer(key, Number(e.target.value))}
-                            className="sudokuInput"
+                            className={`sudokuInput ${type == 9 ? 'font9': 'font4'}`}
                             type="text"
                             value={ answers?.[key] ? answers?.[key]:""}
                           />
